@@ -1,0 +1,183 @@
+{
+  "name": "pre-commit-guardian",
+  "displayName": "Pre-Commit Guardian",
+  "description": "AI-powered pre-commit review: detects AI comments, optimizes code, and generates Jira-structured commit messages",
+  "version": "1.0.0",
+  "publisher": "your-publisher-id",
+  "engines": { "vscode": "^1.90.0" },
+  "categories": ["AI", "SCM Providers", "Linters"],
+  "keywords": ["git", "commit", "jira", "copilot", "review", "pre-commit", "code-review"],
+  "icon": "resources/icon.png",
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "precommit.guardian",
+        "fullName": "Pre-Commit Guardian",
+        "name": "guardian",
+        "description": "Reviews local changes before commit: detects AI comments, analyzes code quality, and generates Jira-structured commit messages",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "review",
+            "description": "Full pre-commit review: AI comments, code optimization, and deep code analysis"
+          },
+          {
+            "name": "commit",
+            "description": "Generate Jira-structured commit message(s) based on current branch and local changes"
+          },
+          {
+            "name": "structure",
+            "description": "Plan how to split local changes into logical, atomic commits"
+          },
+          {
+            "name": "aicomments",
+            "description": "Scan local changes for AI-generated or Copilot-generated comments"
+          },
+          {
+            "name": "check",
+            "description": "Quick readiness check: debug logs, hardcoded secrets, TODO markers"
+          }
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "command": "precommit.guardian.review",
+        "title": "Pre-Commit: Full Review",
+        "icon": "$(shield)",
+        "category": "Guardian"
+      },
+      {
+        "command": "precommit.guardian.generateCommit",
+        "title": "Pre-Commit: Generate Commit Message",
+        "icon": "$(git-commit)",
+        "category": "Guardian"
+      },
+      {
+        "command": "precommit.guardian.structureCommits",
+        "title": "Pre-Commit: Structure Commits",
+        "icon": "$(list-ordered)",
+        "category": "Guardian"
+      },
+      {
+        "command": "precommit.guardian.detectAIComments",
+        "title": "Pre-Commit: Detect AI Comments",
+        "icon": "$(comment-discussion)",
+        "category": "Guardian"
+      },
+      {
+        "command": "precommit.guardian.quickCheck",
+        "title": "Pre-Commit: Quick Readiness Check",
+        "icon": "$(pass)",
+        "category": "Guardian"
+      },
+      {
+        "command": "precommit.guardian.refreshDiagnostics",
+        "title": "Pre-Commit: Refresh Diagnostics",
+        "icon": "$(refresh)",
+        "category": "Guardian"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "precommit.guardian.review",
+        "key": "ctrl+shift+alt+r",
+        "mac": "cmd+shift+alt+r"
+      },
+      {
+        "command": "precommit.guardian.generateCommit",
+        "key": "ctrl+shift+alt+c",
+        "mac": "cmd+shift+alt+c"
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "precommit.guardian.review",
+          "when": "scmProvider == git",
+          "group": "navigation@1"
+        },
+        {
+          "command": "precommit.guardian.generateCommit",
+          "when": "scmProvider == git",
+          "group": "navigation@2"
+        },
+        {
+          "command": "precommit.guardian.structureCommits",
+          "when": "scmProvider == git",
+          "group": "navigation@3"
+        }
+      ],
+      "commandPalette": [
+        { "command": "precommit.guardian.review" },
+        { "command": "precommit.guardian.generateCommit" },
+        { "command": "precommit.guardian.structureCommits" },
+        { "command": "precommit.guardian.detectAIComments" },
+        { "command": "precommit.guardian.quickCheck" }
+      ]
+    },
+    "configuration": {
+      "title": "Pre-Commit Guardian",
+      "properties": {
+        "precommitGuardian.jiraProjectPattern": {
+          "type": "string",
+          "default": "([a-zA-Z]{2,10}-\\d+)",
+          "description": "Regex pattern to extract Jira issue key from branch name (case-insensitive)"
+        },
+        "precommitGuardian.maxFirstLineLength": {
+          "type": "number",
+          "default": 50,
+          "description": "Maximum characters for commit message first line (including Jira tag)"
+        },
+        "precommitGuardian.maxBodyLineLength": {
+          "type": "number",
+          "default": 72,
+          "description": "Maximum characters per line in commit message body"
+        },
+        "precommitGuardian.analyzeUnstaged": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include unstaged (modified but not staged) changes in analysis"
+        },
+        "precommitGuardian.analyzeUntracked": {
+          "type": "boolean",
+          "default": false,
+          "description": "Include new untracked files in analysis"
+        },
+        "precommitGuardian.aiCommentPatterns": {
+          "type": "array",
+          "default": [],
+          "description": "Additional regex patterns (case-insensitive) to detect AI-generated comments"
+        },
+        "precommitGuardian.maxDiffSizeKB": {
+          "type": "number",
+          "default": 200,
+          "description": "Maximum diff size in KB to send to the language model"
+        },
+        "precommitGuardian.enableDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show AI comment warnings in the Problems panel"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.90.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.4.0",
+    "@vscode/vsce": "^2.0.0"
+  }
+}
