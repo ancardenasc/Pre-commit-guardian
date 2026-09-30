@@ -85,7 +85,7 @@ Output ONLY the commit message(s). No preamble, no explanation after.`;
 
         // Check tag presence
         if (!/^\[.+\]/.test(subject)) {
-            warnings.push(`First line must start with a tag like [BDD-7563] or [FIX]`);
+            warnings.push(`First line must start with a tag like [PROJ-1234] or [FIX]`);
         }
 
         // Check length of first line

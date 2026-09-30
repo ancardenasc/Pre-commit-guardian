@@ -305,7 +305,7 @@ Answer specifically based on the code changes above.`;
 
 ## Commit Format
 \`\`\`
-[BDD-7563] Fix null reference in document upload
+[PROJ-1234] Fix null reference in document upload
 
 Resolves issue where uploading a document without a valid session
 caused an unhandled null reference exception in the service layer.

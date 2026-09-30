@@ -17,22 +17,22 @@ A VS Code extension that acts as your **pre-commit quality gate** — powered by
 The extension **automatically extracts** the Jira ticket from your branch name:
 
 ```
-Branch:  bdd-7563-improve-onedrive-document-upload-dialog
+Branch:  proj-1234-improve-onedrive-document-upload-dialog
          └─────────────────────────────────────────────┘
                          ↓ extracted
-Commit:  [BDD-7563] Fix null reference in upload dialog
+Commit:  [PROJ-1234] Fix null reference in upload dialog
 ```
 
 Supported branch formats:
-- `bdd-7563-description`
-- `BDD-7563/description`
-- `feature/bdd-7563-description`
-- `bugfix/BDD-7563-some-fix`
+- `proj-1234-description`
+- `PROJ-1234/description`
+- `feature/proj-1234-description`
+- `bugfix/PROJ-1234-some-fix`
 
 ## Commit Message Format
 
 ```
-[BDD-7563] Fix null reference in document upload      ← max 50 chars (incl. tag)
+[PROJ-1234] Fix null reference in document upload      ← max 50 chars (incl. tag)
                                                        ← blank line
 Resolves issue where uploading a document without a   ← max 72 chars/line
 valid session caused an unhandled null reference

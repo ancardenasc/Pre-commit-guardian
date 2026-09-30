@@ -1,17 +1,17 @@
 import * as vscode from 'vscode';
 
 export interface JiraTicket {
-    raw: string;       // e.g., "bdd-7563"
-    key: string;       // e.g., "BDD-7563"
-    tag: string;       // e.g., "[BDD-7563]"
-    project: string;   // e.g., "BDD"
+    raw: string;       // e.g., "proj-1234"
+    key: string;       // e.g., "PROJ-1234"
+    tag: string;       // e.g., "[PROJ-1234]"
+    project: string;   // e.g., "PROJ"
     number: string;    // e.g., "7563"
 }
 
 export class BranchParser {
     /**
      * Extracts the Jira ticket from a branch name.
-     * Works with formats like: bdd-7563-description, BDD-7563/description, feature/BDD-7563-desc
+     * Works with formats like: proj-1234-description, PROJ-1234/description, feature/PROJ-1234-desc
      */
     extractJiraTicket(branchName: string): JiraTicket | null {
         const cfg = vscode.workspace.getConfiguration('precommitGuardian');
@@ -41,7 +41,7 @@ export class BranchParser {
 
     /**
      * Extracts a human-readable topic from a branch name by removing the ticket.
-     * "bdd-7563-improve-onedrive-document-upload-dialog"
+     * "proj-1234-improve-onedrive-document-upload-dialog"
      * → "improve onedrive document upload dialog"
      */
     extractTopic(branchName: string): string {
@@ -53,7 +53,7 @@ export class BranchParser {
 
         // Remove the jira ticket part (case-insensitive)
         if (ticket) {
-            // Handles bdd-7563, BDD-7563, bdd_7563
+            // Handles proj-1234, PROJ-1234, proj_1234
             const ticketRegex = new RegExp(
                 ticket.project + '[_-]' + ticket.number + '[_-]?',
                 'i'
